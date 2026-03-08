@@ -72,7 +72,7 @@ jobs:
 
       - name: Run Bruno E2E tests
         working-directory: oicana/e2e-tests/bruno
-        run: bru run --env axum --reporter-html results.html
+        run: bru run --env axum --sandbox developer --reporter-html results.html
 
       - name: Upload test results
         if: always()

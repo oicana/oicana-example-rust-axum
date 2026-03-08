@@ -197,7 +197,7 @@ async fn compile_template(
     };
 
     let mut inputs = TemplateInputs::new();
-    inputs.with_config(CompilationConfig::development());
+    inputs.with_config(CompilationConfig::production());
 
     for JsonInput { key, value } in payload.json_inputs {
         inputs.with_input(OicanaJsonInput::new(key, value.to_string()));

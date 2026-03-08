@@ -130,7 +130,7 @@ async fn create_certificate(
     };
 
     let mut inputs = TemplateInputs::new();
-    inputs.with_config(CompilationConfig::development());
+    inputs.with_config(CompilationConfig::production());
 
     // Serialize the typed input to JSON and pass it with the key "certificate"
     // This matches the template's expected input key

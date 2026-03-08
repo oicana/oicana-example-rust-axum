@@ -1,9 +1,9 @@
 [package]
-name = "oicana-example-axum"
+name = "oicana-example-rust-axum"
 description = "Example application using the Oicana Rust integration for PDF templating"
 version = "0.1.0"
 edition = "2024"
-repository = "https://github.com/oicana/oicana-example-axum"
+repository = "https://github.com/oicana/oicana-example-rust-axum"
 license = "MIT"
 
 [dependencies]
