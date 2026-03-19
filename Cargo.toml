@@ -7,11 +7,11 @@ repository = "https://github.com/oicana/oicana-example-rust-axum"
 license = "MIT"
 
 [dependencies]
-oicana = { version = "0.1.0-alpha.6" }
-oicana_files = { version = "0.1.0-alpha.6" }
-oicana_input = { version = "0.1.0-alpha.6" }
-oicana_world = { version = "0.1.0-alpha.6" }
-oicana_export = { version = "0.1.0-alpha.6", features = ["png"] }
+oicana = { version = "0.1.0-alpha.7" }
+oicana_files = { version = "0.1.0-alpha.7" }
+oicana_input = { version = "0.1.0-alpha.7" }
+oicana_world = { version = "0.1.0-alpha.7" }
+oicana_export = { version = "0.1.0-alpha.7", features = ["png"] }
 
 axum = { version = "0.8.4", features = ["macros", "multipart"] }
 tokio = {version = "1", features = ["full"]}
