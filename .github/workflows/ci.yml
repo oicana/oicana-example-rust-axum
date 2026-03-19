@@ -56,4 +56,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: check readme links
-        run: npx linkinator README.md
+        run: npx linkinator README.md --config .github/linkinator.config.json

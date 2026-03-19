@@ -1,0 +1,9 @@
+{
+  "skip": ["http://127.0.0.1:3000/"],
+  "silent": false,
+  "verbosity": "warning",
+  "timeout": 5000,
+  "markdown": true,
+  "retryErrors": true,
+  "retryErrorsCount": 3
+}
