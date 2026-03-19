@@ -8,11 +8,10 @@ use axum::{
     response::{IntoResponse, Response},
 };
 use dashmap::DashMap;
-use oicana::Template;
+use oicana::{CompileError, Template};
 use oicana_export::pdf::export_merged_pdf;
 use oicana_files::packed::PackedTemplate;
 use oicana_input::{CompilationConfig, TemplateInputs, input::json::JsonInput as OicanaJsonInput};
-use oicana_world::TemplateCompilationFailure;
 use serde::{Deserialize, Serialize};
 use tracing::error;
 use utoipa::ToSchema;
@@ -37,7 +36,7 @@ pub fn router(template_cache: TemplateCache) -> OpenApiRouter {
 enum CertificateError {
     TemplateNotFound,
     SerializationFailure(String),
-    CompilationFailure(TemplateCompilationFailure),
+    CompilationFailure(CompileError),
     ExportFailure(String),
 }
 
@@ -63,30 +62,42 @@ impl IntoResponse for CertificateError {
                     format!("Failed to serialize input: {error}"),
                 )
             }
-            CertificateError::CompilationFailure(error) => {
-                match error.warnings {
-                    Some(ref warnings) => {
-                        error!(
-                            "Certificate template failed to compile: {}{}",
-                            error.error, warnings
-                        )
-                    }
-                    None => {
-                        error!("Certificate template failed to compile: {}", error.error)
-                    }
+            CertificateError::CompilationFailure(error) => match error {
+                CompileError::ValidationFailed(validation_error) => {
+                    error!("Certificate input validation failed: {validation_error}");
+                    (
+                        StatusCode::BAD_REQUEST,
+                        format!("Certificate input validation failed: {validation_error}"),
+                    )
                 }
-                (
-                    StatusCode::BAD_REQUEST,
-                    format!(
-                        "Failed to compile certificate: {}{}",
-                        error.error,
-                        error
-                            .warnings
-                            .map(|warning| format!("\n\n{warning}"))
-                            .unwrap_or(String::new())
-                    ),
-                )
-            }
+                CompileError::CompilationFailed(compilation_failure) => {
+                    match compilation_failure.warnings {
+                        Some(ref warnings) => {
+                            error!(
+                                "Certificate template failed to compile: {}{}",
+                                compilation_failure.error, warnings
+                            )
+                        }
+                        None => {
+                            error!(
+                                "Certificate template failed to compile: {}",
+                                compilation_failure.error
+                            )
+                        }
+                    }
+                    (
+                        StatusCode::BAD_REQUEST,
+                        format!(
+                            "Failed to compile certificate: {}{}",
+                            compilation_failure.error,
+                            compilation_failure
+                                .warnings
+                                .map(|warning| format!("\n\n{warning}"))
+                                .unwrap_or(String::new())
+                        ),
+                    )
+                }
+            },
             CertificateError::ExportFailure(error) => {
                 error!(%error, "Certificate failed to export");
                 (

@@ -8,14 +8,14 @@ use axum::{
     response::{IntoResponse, Response},
 };
 use dashmap::DashMap;
-use oicana::Template;
+use oicana::{CompileError, Template};
 use oicana_export::{pdf::export_merged_pdf, png::export_merged_png};
 use oicana_files::packed::PackedTemplate;
 use oicana_input::{
     CompilationConfig, TemplateInputs, input::blob::BlobInput as OicanaBlobInput,
     input::json::JsonInput as OicanaJsonInput,
 };
-use oicana_world::{TemplateCompilationFailure, diagnostics::DiagnosticColor};
+use oicana_world::diagnostics::DiagnosticColor;
 use serde::{Deserialize, Serialize};
 use tokio_util::io::ReaderStream;
 use tracing::{error, info};
@@ -94,18 +94,9 @@ pub fn warmed_up_templates() -> DashMap<String, Template<PackedTemplate>> {
 
 enum TemplateError {
     NotFound(String),
-    BlobNotFound {
-        template_id: String,
-        blob_id: Uuid,
-    },
-    CompilationFailure {
-        id: String,
-        error: TemplateCompilationFailure,
-    },
-    ExportFailure {
-        id: String,
-        error: String,
-    },
+    BlobNotFound { template_id: String, blob_id: Uuid },
+    CompilationFailure { id: String, error: CompileError },
+    ExportFailure { id: String, error: String },
 }
 
 impl IntoResponse for TemplateError {
@@ -138,27 +129,38 @@ impl IntoResponse for TemplateError {
             TemplateError::CompilationFailure {
                 id: template_id,
                 error,
-            } => {
-                match error.warnings {
-                    Some(ref warnings) => {
-                        tracing::error!(%template_id, "Template '{template_id}' failed to compile with given inputs: {}{}", error.error, warnings)
-                    }
-                    None => {
-                        tracing::error!(%template_id, "Template '{template_id}' failed to compile with given inputs: {}", error.error)
-                    }
+            } => match error {
+                CompileError::ValidationFailed(validation_error) => {
+                    tracing::error!(%template_id, "Template '{template_id}' received invalid input: {validation_error}");
+                    (
+                        StatusCode::BAD_REQUEST,
+                        format!(
+                            "Template '{template_id}' received invalid input: {validation_error}"
+                        ),
+                    )
                 }
-                (
-                    StatusCode::BAD_REQUEST,
-                    format!(
-                        "Template '{template_id}' failed to compile with given inputs: {}{}",
-                        error.error,
-                        error
-                            .warnings
-                            .map(|warning| format!("\n\n{warning}"))
-                            .unwrap_or(String::new())
-                    ),
-                )
-            }
+                CompileError::CompilationFailed(compilation_failure) => {
+                    match compilation_failure.warnings {
+                        Some(ref warnings) => {
+                            tracing::error!(%template_id, "Template '{template_id}' failed to compile with given inputs: {}{}", compilation_failure.error, warnings)
+                        }
+                        None => {
+                            tracing::error!(%template_id, "Template '{template_id}' failed to compile with given inputs: {}", compilation_failure.error)
+                        }
+                    }
+                    (
+                        StatusCode::BAD_REQUEST,
+                        format!(
+                            "Template '{template_id}' failed to compile with given inputs: {}{}",
+                            compilation_failure.error,
+                            compilation_failure
+                                .warnings
+                                .map(|warning| format!("\n\n{warning}"))
+                                .unwrap_or(String::new())
+                        ),
+                    )
+                }
+            },
             TemplateError::ExportFailure {
                 id: template_id,
                 error,
