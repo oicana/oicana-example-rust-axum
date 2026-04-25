@@ -297,6 +297,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "bstr"
+version = "1.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "63044e1ae8e69f3b5a92c736ca6269b8d12fa7efe39bf34ddb06d102cf0e2cab"
+dependencies = [
+ "memchr",
+ "serde",
+]
+
+[[package]]
 name = "bumpalo"
 version = "3.20.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1018,6 +1028,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f2e102e6eb644d3e0b186fc161e4460417880a0a0b87d235f2e5b8fb30f2e9e0"
 
 [[package]]
+name = "globset"
+version = "0.4.18"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "52dfc19153a48bde0cbd630453615c8151bce3a5adfac7a0aebfbf0a1e1f57e3"
+dependencies = [
+ "aho-corasick",
+ "bstr",
+ "log",
+ "regex-automata",
+ "regex-syntax",
+]
+
+[[package]]
 name = "half"
 version = "2.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1531,6 +1554,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "ignore"
+version = "0.4.25"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d3d782a365a015e0f5c04902246139249abf769125006fbe7649e2ee88169b4a"
+dependencies = [
+ "crossbeam-deque",
+ "globset",
+ "log",
+ "memchr",
+ "regex-automata",
+ "same-file",
+ "walkdir",
+ "winapi-util",
+]
+
+[[package]]
 name = "image"
 version = "0.25.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2004,18 +2043,17 @@ dependencies = [
 
 [[package]]
 name = "oicana"
-version = "0.1.0-alpha.8"
+version = "0.1.0-alpha.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d360d4c5e50bcf18962ccea6ef7207aad648700561bf7dd11a79f5f4a55a7625"
+checksum = "e0fd708e0c16a8d0e5edba3b0f0e8d8794d254e76b38b9a4dbff994244bc73cd"
 dependencies = [
+ "oicana_export",
  "oicana_files",
  "oicana_input",
  "oicana_template",
  "oicana_world",
  "thiserror",
  "typst",
- "typst-pdf",
- "typst-render",
 ]
 
 [[package]]
@@ -2026,10 +2064,6 @@ dependencies = [
  "axum",
  "dashmap",
  "oicana",
- "oicana_export",
- "oicana_files",
- "oicana_input",
- "oicana_world",
  "serde",
  "serde_json",
  "tokio",
@@ -2046,9 +2080,9 @@ dependencies = [
 
 [[package]]
 name = "oicana_export"
-version = "0.1.0-alpha.8"
+version = "0.1.0-alpha.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76b522db66aa10a089c9ec3330217730484b9f7a8c546d8dc8d5240eec84609c"
+checksum = "a4d032494b46ace0f7431fe9b428da1f1c44b5652ce4b18b99e811c8388672ff"
 dependencies = [
  "oicana_template",
  "oicana_world",
@@ -2056,14 +2090,13 @@ dependencies = [
  "typst",
  "typst-pdf",
  "typst-render",
- "typst-svg",
 ]
 
 [[package]]
 name = "oicana_files"
-version = "0.1.0-alpha.8"
+version = "0.1.0-alpha.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cf4629b0c82ef2f2e5faff35357963f41e8aaf6ef6c9d7301e72464c9a7fd207"
+checksum = "114a451db2fd3658b0cae38201d1d71999ef35ddd5aa22adbac3db34a9ac31ef"
 dependencies = [
  "log",
  "thiserror",
@@ -2074,9 +2107,9 @@ dependencies = [
 
 [[package]]
 name = "oicana_input"
-version = "0.1.0-alpha.8"
+version = "0.1.0-alpha.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc83d5495c06ff01af64c972ff78007e231b34f8a5776d52951a011c2c619f60"
+checksum = "0764f6517f5e5a5ece468672d4a7910c3f2c213e5af4a3cf5ac565c2675685a0"
 dependencies = [
  "log",
  "serde",
@@ -2086,11 +2119,12 @@ dependencies = [
 
 [[package]]
 name = "oicana_template"
-version = "0.1.0-alpha.8"
+version = "0.1.0-alpha.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5bcf91e8782ea3d9cf7b2d4fa8bae7fc679a40158d431b5b5ae95e767558d6d"
+checksum = "8d1c613b41b3f32539cc5f0982db424fc542408586e2e864fd6d12d97b964e30"
 dependencies = [
  "chrono",
+ "ignore",
  "log",
  "oicana_input",
  "serde",
@@ -2104,9 +2138,9 @@ dependencies = [
 
 [[package]]
 name = "oicana_world"
-version = "0.1.0-alpha.8"
+version = "0.1.0-alpha.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7fb5e9f1fe5356fd61fe8dd664150ab57a3caf9c3ab5d9e364fcf235582fbc07"
+checksum = "7e39f9b6d17ea3be7d78121f0515b6f1417f38fd7fe41c3e4e98d69fe21946c7"
 dependencies = [
  "chrono",
  "codespan-reporting",
