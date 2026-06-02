@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/cache/restore@v4
+      - uses: actions/checkout@v6
+      - uses: actions/cache/restore@v5
         with:
           key: ${{ runner.os }}-stable--${{ hashFiles('**/Cargo.toml') }}-
           restore-keys: |
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Actions Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Spell Check Repo
       uses: crate-ci/typos@v1.35.5
 
@@ -54,6 +54,6 @@ jobs:
     name: Check for dead links
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: check readme links
         run: npx linkinator README.md --config .github/linkinator.config.json

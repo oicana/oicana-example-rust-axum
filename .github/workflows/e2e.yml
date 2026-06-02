@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout example service
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -28,7 +28,7 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Checkout oicana repository (for Bruno tests)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: oicana/oicana
           path: oicana
@@ -43,7 +43,7 @@ jobs:
           echo "Service started with PID $(cat service.pid)"
 
       - name: Setup Node.js for Bruno CLI
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '20'
 
