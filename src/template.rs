@@ -289,7 +289,15 @@ async fn preview_template(
     };
 
     // Export all pages merged as PNG
-    let png = export_merged_png(&compilation_result.document, 1.0).unwrap();
+    let png = match export_merged_png(&compilation_result.document, 1.0) {
+        Ok(png) => png,
+        Err(error) => {
+            return Err(TemplateError::ExportFailure {
+                id,
+                error: error.to_string(),
+            });
+        }
+    };
     let body = Body::from(png);
 
     let headers = [

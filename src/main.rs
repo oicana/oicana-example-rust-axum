@@ -25,7 +25,7 @@ const BLOB_TAG: &str = "blob";
 
 #[derive(OpenApi)]
 #[openapi(
-    external_docs(url = "https://docs.oicana.com", description = "General documentation for Oicana."),
+    external_docs(url = "https://oicana.com/docs/", description = "General documentation for Oicana."),
     tags(
         (name = TEMPLATE_TAG, description = "Template API endpoints. Find used templates at https://github.com/oicana/oicana-example-templates."),
         (name = CERTIFICATE_TAG, description = "Create certificates"),
@@ -61,7 +61,7 @@ async fn main() {
             TraceLayer::new_for_http()
                 .make_span_with(DefaultMakeSpan::default().include_headers(true))
                 .on_response(|_response: &Response<_>, latency: Duration, _span: &Span| {
-                    tracing::info!("Request to took: {:?}", latency);
+                    tracing::info!("Request took: {:?}", latency);
                 }),
         )
         .layer(TimeoutLayer::with_status_code(
