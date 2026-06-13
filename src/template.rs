@@ -10,7 +10,7 @@ use axum::{
 use dashmap::DashMap;
 use oicana::{
     CompileError, Template,
-    export::{pdf::export_merged_pdf, png::export_merged_png},
+    export::{pdf::export_pdf, png::export_png},
     files::packed::PackedTemplate,
     input::{
         CompilationConfig, TemplateInputs, input::blob::BlobInput as OicanaBlobInput,
@@ -223,10 +223,12 @@ async fn compile_template(
         Err(error) => return Err(TemplateError::CompilationFailure { id, error }),
     };
 
-    let pdf = match export_merged_pdf(
+    let pdf = match export_pdf(
         &compilation_result.document,
         &*template,
-        &template.manifest().tool.oicana.export.pdf.standards,
+        template.manifest().pdf_standards(),
+        template.manifest().pdf_tagged(),
+        None,
     ) {
         Ok(pdf) => pdf,
         Err(error) => return Err(TemplateError::ExportFailure { id, error }),
@@ -288,8 +290,7 @@ async fn preview_template(
         Err(error) => return Err(TemplateError::CompilationFailure { id, error }),
     };
 
-    // Export all pages merged as PNG
-    let png = match export_merged_png(&compilation_result.document, 1.0) {
+    let png = match export_png(&compilation_result.document, 1.0, None) {
         Ok(png) => png,
         Err(error) => {
             return Err(TemplateError::ExportFailure {

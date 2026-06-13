@@ -10,7 +10,7 @@ use axum::{
 use dashmap::DashMap;
 use oicana::{
     CompileError, Template,
-    export::pdf::export_merged_pdf,
+    export::pdf::export_pdf,
     files::packed::PackedTemplate,
     input::{CompilationConfig, TemplateInputs, input::json::JsonInput as OicanaJsonInput},
 };
@@ -160,10 +160,12 @@ async fn create_certificate(
         .compile(inputs)
         .map_err(CertificateError::CompilationFailure)?;
 
-    let pdf = export_merged_pdf(
+    let pdf = export_pdf(
         &compilation_result.document,
         &*template,
-        &template.manifest().tool.oicana.export.pdf.standards,
+        template.manifest().pdf_standards(),
+        template.manifest().pdf_tagged(),
+        None,
     )
     .map_err(CertificateError::ExportFailure)?;
 
