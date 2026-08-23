@@ -1970,9 +1970,9 @@ dependencies = [
 
 [[package]]
 name = "oicana"
-version = "0.7.0"
+version = "0.8.0-rc.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5c1a90b1383f401813ad892c40dae04ea153b3d27efc444d58d19d7af98acf41"
+checksum = "b8990590f6a8c928e87f8940e12c2e871ace45a6dd3c06ca31a90e516952cce2"
 dependencies = [
  "oicana_export",
  "oicana_files",
@@ -2007,9 +2007,9 @@ dependencies = [
 
 [[package]]
 name = "oicana_export"
-version = "0.7.0"
+version = "0.8.0-rc.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bccd6e114079fa6b7870ebbde9ef191e6e301f23e09238f0a24edd3badaae16f"
+checksum = "7511fde92bbfd2dce2316a601eebf76681435306511ded3241a9ef1fd6769adc"
 dependencies = [
  "oicana_template",
  "oicana_world",
@@ -2024,9 +2024,9 @@ dependencies = [
 
 [[package]]
 name = "oicana_files"
-version = "0.7.0"
+version = "0.8.0-rc.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3d665165f6e8a77aa6b47f8101a6fd1117026b1c3c2d62dc9c87ff985467ea65"
+checksum = "08df9fe2dfac3300c20136a17161ecbce78f4b14cd4eba29c036609e85e53673"
 dependencies = [
  "log",
  "thiserror",
@@ -2037,9 +2037,9 @@ dependencies = [
 
 [[package]]
 name = "oicana_input"
-version = "0.7.0"
+version = "0.8.0-rc.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "109db89099fce61be8e3fd10743d736b43954bc50ceacfdca18569160bf1cdd3"
+checksum = "bdc87600864f58619e3da3978c21903d818d5626673e20d46e3763c42e2a5eaf"
 dependencies = [
  "log",
  "serde",
@@ -2049,9 +2049,9 @@ dependencies = [
 
 [[package]]
 name = "oicana_template"
-version = "0.7.0"
+version = "0.8.0-rc.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "946022d8ffad1cbd188e8dcd9b405b4282bb6037e2617c3eb1af9113fda1b251"
+checksum = "67fff8740e902be360fe71bde61a7a39c1989c57f96d7dc5db05ad7fa54a2e9d"
 dependencies = [
  "chrono",
  "ignore",
@@ -2068,9 +2068,9 @@ dependencies = [
 
 [[package]]
 name = "oicana_world"
-version = "0.7.0"
+version = "0.8.0-rc.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "285a6fd278b4dafacf159b69f5ea4b81f0bd51f9c561192c7de236fd6bb64d61"
+checksum = "6386fe327dc1fbaa8a6a96c37b018155b3f1acf662dcff5c65755545041006f6"
 dependencies = [
  "chrono",
  "codespan-reporting",
